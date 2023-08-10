@@ -1,0 +1,20 @@
+---
+# tasks file for apache
+- name: install apache
+  ansible.builtin.yum: 
+    name: httpd
+    state: present
+- name: start the apache
+  ansible.builtin.service: 
+    name: httpd
+    state: started 
+- name: change welcome page
+  ansible.builtin.copy: 
+    src: index.html
+    dest: /var/www/html/
+- name: updating the portnumber
+  ansible.builtin.template:  
+    src: httpd.conf.j2
+    dest: /etc/httpd/conf/httpd.conf
+  notify: 
+    - restart apache    
